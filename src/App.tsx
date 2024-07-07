@@ -1,35 +1,30 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import React from 'react';
+import Input from './components/Input/Input.tsx';
+import Button from './components/Button/Button.tsx';
 import './App.css';
+import Card from './components/Card/Card.tsx';
 
-function App() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <>
+class App extends React.Component {
+  render(): React.ReactNode {
+    return (
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <header className="header">
+          <Input />
+          <Button title="Search" />
+        </header>
+        <div className="cards">
+          <Card
+            name="Planet"
+            classification="classification"
+            designation="designation"
+            average_height={180}
+            average_lifespan={99}
+            language="English"
+          />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  );
+    );
+  }
 }
 
 export default App;
