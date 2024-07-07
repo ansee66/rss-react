@@ -1,14 +1,14 @@
 import React from 'react';
 import './Card.css';
 
-type CardProps = {
+export interface CardProps {
   name: string;
   classification: string;
   designation: string;
   average_height: number;
   average_lifespan: number;
   language: string;
-};
+}
 
 class Card extends React.Component<CardProps> {
   render() {

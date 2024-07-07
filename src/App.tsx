@@ -1,8 +1,8 @@
 import React from 'react';
 import Input from './components/Input/Input.tsx';
 import Button from './components/Button/Button.tsx';
+import CardList from './components/CardList/CardList.tsx';
 import './App.css';
-import Card from './components/Card/Card.tsx';
 
 class App extends React.Component {
   render(): React.ReactNode {
@@ -12,16 +12,7 @@ class App extends React.Component {
           <Input />
           <Button title="Search" />
         </header>
-        <div className="cards">
-          <Card
-            name="Planet"
-            classification="classification"
-            designation="designation"
-            average_height={180}
-            average_lifespan={99}
-            language="English"
-          />
-        </div>
+        <CardList query={null} />
       </div>
     );
   }
