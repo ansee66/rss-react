@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Input from './components/Input/Input';
 import Button from './components/Button/Button';
 import CardList from './components/CardList/CardList';
+import { ErrorBoundaryContext } from './components/ErrorBoundary/ErrorBoundary';
 import './App.css';
 
 class App extends React.Component {
@@ -22,16 +23,26 @@ class App extends React.Component {
 
   render(): React.ReactNode {
     return (
-      <div>
-        <header className="header">
-          <Input
-            value={this.state.inputValue}
-            onChange={this.handleInputChange}
-          />
-          <Button title="Search" onClick={this.handleSearch} />
-        </header>
-        <CardList query={this.state.query} />
-      </div>
+      <ErrorBoundaryContext.Consumer>
+        {(triggerError) => (
+          <Fragment>
+            <header className="header">
+              <Input
+                value={this.state.inputValue}
+                onChange={this.handleInputChange}
+              />
+              <Button title="Search" onClick={this.handleSearch} />
+              <Button
+                title="Throw Error"
+                onClick={() => {
+                  triggerError(new Error('For testing Error Boundary'));
+                }}
+              />
+            </header>
+            <CardList query={this.state.query} triggerError={triggerError} />
+          </Fragment>
+        )}
+      </ErrorBoundaryContext.Consumer>
     );
   }
 }

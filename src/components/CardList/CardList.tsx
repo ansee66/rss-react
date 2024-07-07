@@ -1,9 +1,11 @@
 import React from 'react';
 import Card, { CardProps } from '../Card/Card';
+import { TriggerErrorType } from '../ErrorBoundary/ErrorBoundary';
 import './CardList.css';
 
 type PropsType = {
   query: string;
+  triggerError: TriggerErrorType;
 };
 
 type StateType = {
@@ -25,12 +27,17 @@ class CardList extends React.Component<PropsType, StateType> {
     this.setState({ isLoaded: false });
     fetch(`https://swapi.dev/api/species?search=${this.props.query}`)
       .then((res) => res.json())
-      .then((data) => {
-        this.setState({
-          isLoaded: true,
-          cards: data.results,
-        });
-      });
+      .then(
+        (data) => {
+          this.setState({
+            isLoaded: true,
+            cards: data.results,
+          });
+        },
+        (error) => {
+          this.props.triggerError(error);
+        }
+      );
   }
 
   componentDidMount() {
