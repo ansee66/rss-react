@@ -3,7 +3,7 @@ import Card, { CardProps } from '../Card/Card';
 import './CardList.css';
 
 type PropsType = {
-  query: string | null;
+  query: string;
 };
 
 type StateType = {
@@ -18,10 +18,12 @@ class CardList extends React.Component<PropsType, StateType> {
       isLoaded: false,
       cards: [],
     };
+    this.fetchData = this.fetchData.bind(this);
   }
 
-  componentDidMount() {
-    fetch('https://swapi.dev/api/species?page=1')
+  fetchData() {
+    this.setState({ isLoaded: false });
+    fetch(`https://swapi.dev/api/species?search=${this.props.query}`)
       .then((res) => res.json())
       .then((data) => {
         this.setState({
@@ -31,9 +33,21 @@ class CardList extends React.Component<PropsType, StateType> {
       });
   }
 
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  componentDidUpdate(prevProps: PropsType) {
+    if (prevProps.query !== this.props.query) {
+      this.fetchData();
+    }
+  }
+
   render() {
     return !this.state.isLoaded ? (
-      <div className="cards-loader">Loading...</div>
+      <div className="cards-info">Loading...</div>
+    ) : this.state.cards.length === 0 ? (
+      <div className="cards-info">Nothing was found</div>
     ) : (
       <div className="cards">
         {this.state.cards.map((card: CardProps, index: number) => {

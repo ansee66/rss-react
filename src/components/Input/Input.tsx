@@ -1,9 +1,21 @@
 import React from 'react';
 import './Input.css';
 
-class Input extends React.Component {
+interface InputProps {
+  value: string;
+  onChange: { (event: React.FormEvent<HTMLInputElement>): void };
+}
+
+class Input extends React.Component<InputProps> {
   render() {
-    return <input type="text" placeholder="search..." className="input" />;
+    return (
+      <input
+        type="text"
+        value={this.props.value}
+        className="input"
+        onChange={this.props.onChange}
+      />
+    );
   }
 }
 
