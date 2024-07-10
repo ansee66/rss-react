@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "format:fix": "prettier . --write --color",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "husky": {
     "hooks": {
