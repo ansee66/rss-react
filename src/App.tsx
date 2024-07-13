@@ -1,24 +1,21 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import Input from './components/Input/Input';
 import Button from './components/Button/Button';
 import CardList from './components/CardList/CardList';
 import { ErrorBoundaryContext } from './components/ErrorBoundary/ErrorBoundary';
+import useLocalStorage from './hooks/useLocalStorage';
 import './App.css';
 
 const App = () => {
-  const [inputValue, setInputValue] = useState(
-    localStorage.getItem('query') ?? ''
-  );
-  const [query, setQuery] = useState(localStorage.getItem('query') ?? '');
+  const [inputValue, setInputValue] = useLocalStorage('query', '');
+  const [query, setQuery] = useLocalStorage('query', '');
 
   const handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
     setInputValue(event.currentTarget.value);
   };
 
   const handleSearch = () => {
-    const newQuery = inputValue.trimEnd();
-    setQuery(newQuery);
-    localStorage.setItem('query', newQuery);
+    setQuery(inputValue.trimEnd());
   };
 
   return (
