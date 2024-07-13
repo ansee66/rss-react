@@ -6,14 +6,12 @@ interface ButtonProps {
   onClick: { (event: React.MouseEvent<HTMLElement>): void };
 }
 
-class Button extends React.Component<ButtonProps> {
-  render() {
-    return (
-      <button className="button" onClick={this.props.onClick}>
-        {this.props.title}
-      </button>
-    );
-  }
-}
+const Button = ({ title, onClick }: ButtonProps) => {
+  return (
+    <button className="button" onClick={onClick}>
+      {title}
+    </button>
+  );
+};
 
 export default Button;

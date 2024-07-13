@@ -6,17 +6,10 @@ interface InputProps {
   onChange: { (event: React.FormEvent<HTMLInputElement>): void };
 }
 
-class Input extends React.Component<InputProps> {
-  render() {
-    return (
-      <input
-        type="text"
-        value={this.props.value}
-        className="input"
-        onChange={this.props.onChange}
-      />
-    );
-  }
-}
+const Input = ({ value, onChange }: InputProps) => {
+  return (
+    <input type="text" value={value} className="input" onChange={onChange} />
+  );
+};
 
 export default Input;

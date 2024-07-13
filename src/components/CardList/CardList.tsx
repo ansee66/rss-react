@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Card, { CardProps } from '../Card/Card';
 import { TriggerErrorType } from '../ErrorBoundary/ErrorBoundary';
 import './CardList.css';
@@ -8,71 +8,50 @@ type PropsType = {
   triggerError: TriggerErrorType;
 };
 
-type StateType = {
-  isLoaded: boolean;
-  cards: CardProps[];
-};
+const CardList = ({ query, triggerError }: PropsType) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [cards, setCards] = useState([]);
 
-class CardList extends React.Component<PropsType, StateType> {
-  constructor(props: PropsType) {
-    super(props);
-    this.state = {
-      isLoaded: false,
-      cards: [],
-    };
-    this.fetchData = this.fetchData.bind(this);
-  }
-
-  fetchData() {
-    this.setState({ isLoaded: false });
-    fetch(`https://swapi.dev/api/species?search=${this.props.query}`)
+  const fetchData = useCallback(() => {
+    setIsLoading(true);
+    fetch(`https://swapi.dev/api/species?search=${query}`)
       .then((res) => res.json())
       .then(
         (data) => {
-          this.setState({
-            isLoaded: true,
-            cards: data.results,
-          });
+          setIsLoading(false);
+          setCards(data.results);
         },
         (error) => {
-          this.props.triggerError(error);
+          triggerError(error);
         }
       );
-  }
+  }, [query, triggerError]);
 
-  componentDidMount() {
-    this.fetchData();
-  }
+  useEffect(() => {
+    fetchData();
+  }, [fetchData, query]);
 
-  componentDidUpdate(prevProps: PropsType) {
-    if (prevProps.query !== this.props.query) {
-      this.fetchData();
-    }
-  }
-
-  render() {
-    return !this.state.isLoaded ? (
-      <div className="cards-info">Loading...</div>
-    ) : this.state.cards.length === 0 ? (
-      <div className="cards-info">Nothing was found</div>
-    ) : (
-      <div className="cards">
-        {this.state.cards.map((card: CardProps, index: number) => {
-          return (
-            <Card
-              key={index}
-              name={card.name}
-              classification={card.classification}
-              designation={card.designation}
-              average_height={card.average_height}
-              average_lifespan={card.average_lifespan}
-              language={card.language}
-            />
-          );
-        })}
-      </div>
-    );
-  }
-}
+  return isLoading ? (
+    <div className="cards-info">Loading...</div>
+  ) : cards.length === 0 ? (
+    <div className="cards-info">Nothing was found</div>
+  ) : (
+    <div className="cards">
+      {cards.map((card: CardProps, index: number) => {
+        return (
+          <Card
+            key={index}
+            name={card.name}
+            classification={card.classification}
+            designation={card.designation}
+            average_height={card.average_height}
+            average_lifespan={card.average_lifespan}
+            language={card.language}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
 export default CardList;
