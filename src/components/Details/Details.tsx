@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { TriggerErrorType } from '../ErrorBoundary/ErrorBoundary';
 import { getSpeciesDetails } from '../../api/fetchData';
 import { SpeciesDetails } from '../../types/types';
@@ -12,25 +13,45 @@ type PropsType = {
 const Details = ({ id, triggerError }: PropsType) => {
   const [isLoading, setIsLoading] = useState(false);
   const [species, setSpecies] = useState<SpeciesDetails | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const detailsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (id) {
       getSpeciesDetails(id, triggerError, setIsLoading).then((data) => {
-        if (data) {
-          console.log('data', data);
-          setSpecies(data);
-        }
+        if (data) setSpecies(data);
       });
     }
   }, [id, triggerError]);
 
+  const closeDetails = useCallback(() => {
+    searchParams.delete('details');
+    setSearchParams(searchParams);
+  }, [searchParams, setSearchParams]);
+
+  useEffect(() => {
+    const handleOutsideClick = (event: Event) => {
+      if (species) {
+        if (detailsRef.current && event.target instanceof Node) {
+          if (!detailsRef.current.contains(event.target)) closeDetails();
+        }
+      }
+    };
+
+    document.addEventListener('click', handleOutsideClick);
+    return () => document.removeEventListener('click', handleOutsideClick);
+  }, [species, detailsRef, closeDetails]);
+
   return (
-    <div className="details">
+    <div className="details" ref={detailsRef}>
       {isLoading ? (
         <h2>Loading...</h2>
       ) : (
         species && (
           <>
+            <button className="details__close" onClick={closeDetails}>
+              X
+            </button>
             <h2 className="details__name">Details about {species.name}</h2>
 
             <dl className="card__properties">

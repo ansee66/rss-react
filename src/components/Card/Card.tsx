@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
-import { DATA_URL } from '../../api/fetchData';
 import { Species } from '../../types/types';
+import { getIdFromUrl } from '../../utils/utils';
 import './Card.css';
 
 const Card = ({
@@ -12,7 +12,7 @@ const Card = ({
   language,
   url,
 }: Species) => {
-  const id = url.replace(DATA_URL, '').replace(/^\/|\/$/g, '');
+  const id = getIdFromUrl(url);
   const [searchParams, setSearchParams] = useSearchParams();
 
   return (
