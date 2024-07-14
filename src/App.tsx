@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Input from './components/Input/Input';
 import Button from './components/Button/Button';
 import CardList from './components/CardList/CardList';
@@ -7,8 +8,13 @@ import useLocalStorage from './hooks/useLocalStorage';
 import './App.css';
 
 const App = () => {
-  const [inputValue, setInputValue] = useLocalStorage('query', '');
-  const [query, setQuery] = useLocalStorage('query', '');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [inputValue, setInputValue] = useLocalStorage('search', '');
+  const [query, setQuery] = useLocalStorage(
+    'query',
+    searchParams.get('query') ?? ''
+  );
+  const [page, setPage] = useState(Number(searchParams.get('page') ?? 1));
 
   const handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
     setInputValue(event.currentTarget.value);
@@ -16,7 +22,12 @@ const App = () => {
 
   const handleSearch = () => {
     setQuery(inputValue.trimEnd());
+    setPage(1);
   };
+
+  useEffect(() => {
+    setSearchParams({ search: query, page: page.toString() });
+  }, [query, page, setSearchParams]);
 
   return (
     <ErrorBoundaryContext.Consumer>
@@ -32,7 +43,12 @@ const App = () => {
               }}
             />
           </header>
-          <CardList query={query} triggerError={triggerError} />
+          <CardList
+            query={query}
+            page={page}
+            setPage={setPage}
+            triggerError={triggerError}
+          />
         </Fragment>
       )}
     </ErrorBoundaryContext.Consumer>
