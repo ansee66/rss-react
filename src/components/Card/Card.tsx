@@ -1,13 +1,7 @@
+import { useSearchParams } from 'react-router-dom';
+import { DATA_URL } from '../../api/fetchData';
+import { Species } from '../../types/types';
 import './Card.css';
-
-export interface CardProps {
-  name: string;
-  classification: string;
-  designation: string;
-  average_height: number;
-  average_lifespan: number;
-  language: string;
-}
 
 const Card = ({
   name,
@@ -16,9 +10,19 @@ const Card = ({
   average_height,
   average_lifespan,
   language,
-}: CardProps) => {
+  url,
+}: Species) => {
+  const id = url.replace(DATA_URL, '').replace(/^\/|\/$/g, '');
+  const [searchParams, setSearchParams] = useSearchParams();
+
   return (
-    <div className="card">
+    <div
+      className="card"
+      onClick={() => {
+        searchParams.set('details', id);
+        setSearchParams(searchParams);
+      }}
+    >
       <h2 className="card__name">{name}</h2>
       <dl className="card__properties">
         <dt>Classification</dt>

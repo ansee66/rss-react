@@ -1,0 +1,8 @@
+.details {
+  flex: 1 0 25%;
+  padding-top: 35px;
+  padding-left: 20px;
+  margin-bottom: 45px;
+  border: 2px solid #334e30;
+  border-radius: 15px;
+}
