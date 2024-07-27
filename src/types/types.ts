@@ -2,15 +2,15 @@ export interface Species {
   name: string;
   classification: string;
   designation: string;
-  average_height: number;
-  average_lifespan: number;
+  average_height: string;
+  average_lifespan: string;
   language: string;
   url: string;
 }
 
 export interface SpeciesResponse {
   results: Species[];
-  count: string | null;
+  count: number | null;
 }
 
 export interface SpeciesDetails {

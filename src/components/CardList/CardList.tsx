@@ -3,8 +3,8 @@ import Card from '../Card/Card';
 import { Species } from '../../types/types';
 import { TriggerErrorType } from '../ErrorBoundary/ErrorBoundary';
 import Pagination from '../Pagination/Pagination';
-import './CardList.css';
 import { getSpecies } from '../../api/fetchData';
+import './CardList.css';
 
 type PropsType = {
   query: string;
@@ -33,7 +33,7 @@ const CardList = ({ query, page, setPage, triggerError }: PropsType) => {
     <div className="cards-info">Nothing was found</div>
   ) : (
     <div>
-      <div className="cards">
+      <ul className="cards">
         {cards.map((card: Species, index: number) => {
           return (
             <Card
@@ -48,7 +48,7 @@ const CardList = ({ query, page, setPage, triggerError }: PropsType) => {
             />
           );
         })}
-      </div>
+      </ul>
       <Pagination count={cardsCount} currentPage={page} setPage={setPage} />
     </div>
   );

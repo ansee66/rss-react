@@ -1,7 +1,6 @@
 import { TriggerErrorType } from '../components/ErrorBoundary/ErrorBoundary';
+import { DATA_URL } from '../constants';
 import { SpeciesDetails, SpeciesResponse } from '../types/types';
-
-export const DATA_URL = 'https://swapi.dev/api/species';
 
 export const getSpecies = async (
   query: string,
