@@ -15,14 +15,13 @@ const Card = ({
   const id = getIdFromUrl(url);
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const handleClick = (): void => {
+    searchParams.set('details', id);
+    setSearchParams(searchParams);
+  };
+
   return (
-    <div
-      className="card"
-      onClick={() => {
-        searchParams.set('details', id);
-        setSearchParams(searchParams);
-      }}
-    >
+    <li className="card" onClick={handleClick}>
       <h2 className="card__name">{name}</h2>
       <dl className="card__properties">
         <dt>Classification</dt>
@@ -40,7 +39,7 @@ const Card = ({
         <dt>Language</dt>
         <dd>{language}</dd>
       </dl>
-    </div>
+    </li>
   );
 };
 
