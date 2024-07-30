@@ -1,12 +1,12 @@
 import './Pagination.css';
 
-type PropsType = {
+export type PaginationPropsType = {
   count: number;
   currentPage: number;
   setPage: (page: number) => void;
 };
 
-const Pagination = ({ count, currentPage, setPage }: PropsType) => {
+const Pagination = ({ count, currentPage, setPage }: PaginationPropsType) => {
   const ITEMS_PER_PAGE = 10;
   const pageAmount = Math.ceil(count / ITEMS_PER_PAGE);
   const pageArray = new Array(pageAmount)
