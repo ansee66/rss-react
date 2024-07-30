@@ -1,13 +1,12 @@
 import '@testing-library/jest-dom';
-import { act, render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
 import CardList from './CardList';
 import { DATA_URL } from '../../constants';
 import {
   mockedEmptySpeciesResponse,
   mockedSpeciesResponse,
+  mockFetchAndRender,
 } from '../../utils/mockUtils';
-import { SpeciesResponse } from '../../types/types';
 
 if (!globalThis.fetch) {
   globalThis.fetch = jest.fn();
@@ -16,24 +15,6 @@ if (!globalThis.fetch) {
 const setPage = jest.fn();
 const triggerError = jest.fn();
 const mockedProps = { query: '', page: 1, setPage, triggerError };
-
-const mockFetchAndRender = async (
-  mockedRespone: SpeciesResponse
-): Promise<void> => {
-  const mockedFetchResponse = {
-    json: async () => mockedRespone,
-  } as Response;
-
-  jest.spyOn(globalThis, 'fetch').mockResolvedValueOnce(mockedFetchResponse);
-
-  await act(() =>
-    render(
-      <MemoryRouter>
-        <CardList {...mockedProps} />
-      </MemoryRouter>
-    )
-  );
-};
 
 describe('CardList component', () => {
   afterEach(() => {
@@ -47,7 +28,10 @@ describe('CardList component', () => {
   });
 
   it('should send a request for data with the appropriate parameters', async () => {
-    await mockFetchAndRender(mockedSpeciesResponse);
+    await mockFetchAndRender(
+      mockedSpeciesResponse,
+      <CardList {...mockedProps} />
+    );
 
     expect(globalThis.fetch).toHaveBeenCalledWith(
       `${DATA_URL}?search=${mockedProps.query}&page=${mockedProps.page}`
@@ -55,14 +39,20 @@ describe('CardList component', () => {
   });
 
   it('should render the specified number of cards', async () => {
-    await mockFetchAndRender(mockedSpeciesResponse);
+    await mockFetchAndRender(
+      mockedSpeciesResponse,
+      <CardList {...mockedProps} />
+    );
 
     expect(screen.queryAllByRole('list').length).toBe(2);
     expect(screen.queryAllByRole('list')[0].children.length).toBe(2);
   });
 
   it('should display an appropriate message if no cards are present', async () => {
-    await mockFetchAndRender(mockedEmptySpeciesResponse);
+    await mockFetchAndRender(
+      mockedEmptySpeciesResponse,
+      <CardList {...mockedProps} />
+    );
 
     expect(screen.queryByText(/Nothing was found/)).toBeInTheDocument();
   });

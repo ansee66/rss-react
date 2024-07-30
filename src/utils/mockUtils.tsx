@@ -1,4 +1,7 @@
+import { act, render } from '@testing-library/react';
 import { SpeciesDetails, SpeciesResponse } from '../types/types';
+import { MemoryRouter } from 'react-router-dom';
+import { ReactNode } from 'react';
 
 export const mockedSpeciesResponse: SpeciesResponse = {
   results: [
@@ -43,4 +46,17 @@ export const mockedDetailsResponse: SpeciesDetails = {
   name: 'Human',
   skin_colors: 'caucasian, black, asian, hispanic',
   url: 'https://swapi.dev/api/species/1/',
+};
+
+export const mockFetchAndRender = async (
+  mockedRespone: SpeciesDetails | SpeciesResponse,
+  children: ReactNode | ReactNode[]
+): Promise<void> => {
+  const mockedFetchResponse = {
+    json: async () => mockedRespone,
+  } as Response;
+
+  jest.spyOn(globalThis, 'fetch').mockResolvedValueOnce(mockedFetchResponse);
+
+  await act(() => render(<MemoryRouter>{children}</MemoryRouter>));
 };

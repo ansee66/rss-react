@@ -5,12 +5,12 @@ import { getSpeciesDetails } from '../../api/fetchData';
 import { SpeciesDetails } from '../../types/types';
 import './Details.css';
 
-type PropsType = {
+export type DetailsPropsType = {
   id: string;
   triggerError: TriggerErrorType;
 };
 
-const Details = ({ id, triggerError }: PropsType) => {
+const Details = ({ id, triggerError }: DetailsPropsType) => {
   const [isLoading, setIsLoading] = useState(false);
   const [species, setSpecies] = useState<SpeciesDetails | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
