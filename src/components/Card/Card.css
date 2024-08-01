@@ -1,0 +1,28 @@
+.card {
+  padding: 16px;
+  border: 2px solid #334e30;
+  border-radius: 15px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.card__name {
+  margin: 0;
+}
+
+.card__properties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 10px 0 0;
+  text-align: left;
+}
+
+.card__properties dt {
+  margin: 0;
+  font-weight: bold;
+}
+
+.card__properties dd {
+  margin: 0;
+  padding-left: 10px;
+}

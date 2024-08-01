@@ -1,0 +1,18 @@
+.details {
+  position: relative;
+  flex: 1 0 25%;
+  padding-top: 35px;
+  padding-left: 20px;
+  margin-bottom: 65px;
+  border: 2px solid #334e30;
+  border-radius: 15px;
+}
+
+.details__close {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+}
